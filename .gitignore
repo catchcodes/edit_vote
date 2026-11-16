@@ -1,0 +1,14 @@
+# 站点本身全部需要提交：index.html / data / img 都是运行时资源，
+# 不能忽略，否则 Pages 上会出现空白页。
+
+# 只忽略操作系统和编辑器产生的垃圾
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# 本地预览时可选的构建中间产物
+__pycache__/
+*.pyc

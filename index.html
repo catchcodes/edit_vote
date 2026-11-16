@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PIE-Bench 图像编辑人工评测</title>
+<style>
+:root{--bg:#0f1115;--card:#161a20;--line:#262c36;--fg:#e8ebf0;--dim:#94a0b0;
+      --acc:#4c8dff;--ok:#2ea043;--bad:#8b3a3a;--cell-min:190px;}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,"Segoe UI","Noto Sans SC",sans-serif}
+.wrap{padding:12px 16px 40px;max-width:100%}
+h1{font-size:17px;margin:0;font-weight:600}
+.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px;background:#20303f;color:#9fc0ff}
+.tag.rater{background:#1e3a2f;color:#7ee2a8}
+.dim{color:var(--dim);font-size:12px}
+.bar{height:4px;background:#1d232c;border-radius:99px;overflow:hidden;margin:8px 0 12px}
+.bar>i{display:block;height:100%;background:var(--acc);transition:width .2s}
+.prompt{font-size:15px;line-height:1.45;margin:0 0 14px}
+.prompt b{color:#ffd479}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;
+      padding:16px;margin-top:14px;max-width:640px}
+.row{display:grid;gap:8px;align-items:start;
+     grid-template-columns:repeat(auto-fit,minmax(var(--cell-min),1fr))}
+.cell{min-width:0;display:flex;flex-direction:column}
+.head{font-size:13px;font-weight:600;text-align:center;margin-bottom:4px;
+      color:#9fc0ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.head.orig{color:var(--dim)}
+.cell img{width:100%;height:auto;display:block;border-radius:6px;background:#000;
+          cursor:zoom-in}
+.judge{display:flex;gap:6px;margin-top:6px}
+.judge label{flex:1;text-align:center;font-size:13px;padding:7px 0;cursor:pointer;
+  border:1px solid var(--line);border-radius:5px;background:#12161c;color:var(--dim);
+  user-select:none;transition:.12s}
+.judge input{display:none}
+.judge label.yes:has(input:checked){background:#1d3a26;border-color:var(--ok);color:#8ef0ab}
+.judge label.no:has(input:checked){background:#3a1d1d;border-color:var(--bad);color:#f0a0a0}
+/* fallback for browsers without :has() */
+.judge label.yes.checked{background:#1d3a26;border-color:var(--ok);color:#8ef0ab}
+.judge label.no.checked{background:#3a1d1d;border-color:var(--bad);color:#f0a0a0}
+.prefrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}
+.prefrow .q{font-size:14px;color:var(--dim);margin-right:4px}
+.pref{cursor:pointer;font-size:13px;padding:6px 14px;border:1px solid var(--line);
+      border-radius:5px;background:#12161c;color:var(--dim);user-select:none;transition:.12s}
+.pref input{display:none}
+.pref:has(input:checked){background:#1e2f4a;border-color:var(--acc);color:#bcd6ff}
+.pref.checked{background:#1e2f4a;border-color:var(--acc);color:#bcd6ff}
+.submit{display:flex;gap:10px;align-items:center;margin-top:20px;flex-wrap:wrap}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:9px 20px;
+     font-size:14px;cursor:pointer;font-weight:500}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--dim)}
+.btn.sm{padding:5px 12px;font-size:12px}
+.hint{font-size:13px;color:#ffb454}
+.hint.ok{color:#7ee2a8}
+.sz{background:#1d232c;border:1px solid var(--line);color:var(--dim);
+    border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer}
+.sz.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.raterform{display:inline-flex;gap:6px;align-items:center}
+.raterform input{background:#1d232c;border:1px solid var(--line);color:var(--fg);
+  border-radius:4px;padding:5px 10px;font-size:13px;width:170px}
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.94);display:none;
+    align-items:center;justify-content:center;z-index:99;cursor:zoom-out;padding:20px}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}
+.lb .cap{position:absolute;top:14px;left:20px;color:#cfd8e3;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+th,td{border-bottom:1px solid var(--line);padding:6px 9px;text-align:left}
+th{color:var(--dim);font-weight:500}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- rater gate -->
+<section id="gate" style="display:none">
+  <h1>PIE-Bench 图像编辑人工评测</h1>
+  <div class="card">
+    <p style="margin-top:0;line-height:1.5">
+      共 <b id="gate-n"></b> 个样本，每个样本显示原图和 <b id="gate-m"></b> 个方法的编辑结果。
+      你需要为每个结果判断「编辑是否成功」，并选出整体最好的一个。
+    </p>
+    <div class="raterform">
+      <input id="gate-name" placeholder="你的名字或编号" maxlength="40" autocomplete="off">
+      <button class="btn" id="gate-go">开始评测</button>
+    </div>
+    <div class="dim" style="margin-top:12px">
+      名字用于统计评测者间一致性（Krippendorff's α），不会公开展示。
+    </div>
+    <div class="hint" id="gate-err" style="margin-top:8px"></div>
+  </div>
+</section>
+
+<!-- main -->
+<section id="main" style="display:none">
+  <div class="top">
+    <h1>样本 <span id="sid"></span></h1>
+    <span class="tag" id="type"></span>
+    <span class="tag rater" id="who"></span>
+    <span class="dim" id="prog"></span>
+    <span class="dim" style="margin-left:auto">
+      显示尺寸
+      <button class="sz" data-min="150">小</button>
+      <button class="sz" data-min="190">中</button>
+      <button class="sz" data-min="280">大</button>
+    </span>
+  </div>
+  <div class="bar"><i id="progbar" style="width:0%"></i></div>
+  <div class="prompt"><b>编辑指令：</b><span id="instr"></span></div>
+  <div class="row" id="grid"></div>
+  <div class="prefrow">
+    <span class="q">整体最好：</span>
+    <div id="prefs" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  </div>
+  <div class="submit">
+    <button class="btn" id="send">提交并下一个</button>
+    <button class="btn ghost" id="undo" title="撤销上一票">撤销上一票</button>
+    <span class="hint" id="hint"></span>
+  </div>
+</section>
+
+<!-- done -->
+<section id="done" style="display:none">
+  <h1>已完成</h1>
+  <div class="card">
+    <p>你已评完所有样本，谢谢。</p>
+    <div id="done-stats" class="dim" style="margin:12px 0"></div>
+    <button class="btn" id="dl">导出我的投票 (JSON)</button>
+    <button class="btn ghost" id="reset">重新开始</button>
+  </div>
+</section>
+
+</div>
+
+<div class="lb" id="lb"><div class="cap" id="lbcap"></div><img id="lbimg" alt=""></div>
+
+<script src="data/panel.js"></script>
+<script>
+(function () {
+"use strict";
+var P = window.PANEL || {samples: [], methods: [], labels: {}, storage: "local", endpoint: ""};
+var S = P.samples, M = P.methods;
+var VKEY = "pie_votes", RKEY = "pie_rater", SKEY = "pie_sid", CKEY = "pie_cell_min";
+
+function $(id) { return document.getElementById(id); }
+
+/* ---------- identity ---------- */
+function rater() { return localStorage.getItem(RKEY) || ""; }
+function sid() {
+  var s = localStorage.getItem(SKEY);
+  if (!s) { s = Math.random().toString(16).slice(2, 18); localStorage.setItem(SKEY, s); }
+  return s;
+}
+
+/* ---------- votes ---------- */
+function loadVotes() {
+  try { return JSON.parse(localStorage.getItem(VKEY) || "[]"); } catch (e) { return []; }
+}
+function saveVotes(v) { localStorage.setItem(VKEY, JSON.stringify(v)); }
+
+/* one verdict per (rater, sample): the last submission wins, an undo removes it */
+function effective() {
+  var rows = loadVotes(), latest = {}, dead = {};
+  rows.forEach(function (v) {
+    var k = v.sample_id;
+    if (v.undo) { dead[k] = 1; delete latest[k]; return; }
+    delete dead[k];
+    latest[k] = v;
+  });
+  var out = {};
+  Object.keys(latest).forEach(function (k) { if (!dead[k]) out[k] = latest[k]; });
+  return out;
+}
+
+/* ---------- anonymised order (same rule as the Flask app) ---------- */
+function hash32(str) {
+  var h = 2166136261 >>> 0;
+  for (var i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return h >>> 0;
+}
+/* deterministic per (rater, sample): refreshing never reshuffles */
+function orderFor(sampleId) {
+  var seed = hash32(rater() + "|" + sampleId);
+  var pool = M.slice();
+  for (var i = pool.length - 1; i > 0; i--) {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    var j = seed % (i + 1);
+    var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+  }
+  return pool;
+}
+function labelFor(i) {
+  var s = "", n = i + 1;
+  while (n > 0) { var r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+function slotsFor(sampleId) {
+  return orderFor(sampleId).map(function (m, i) { return {label: labelFor(i), model: m}; });
+}
+
+/* ---------- task order ---------- */
+function taskOrder() {
+  var seed = hash32(rater() + "|task-order"), idx = S.map(function (_, i) { return i; });
+  for (var i = idx.length - 1; i > 0; i--) {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    var j = seed % (i + 1);
+    var t = idx[i]; idx[i] = idx[j]; idx[j] = t;
+  }
+  return idx.map(function (i) { return S[i]; });
+}
+function pending() {
+  var done = effective();
+  return taskOrder().filter(function (s) { return !done[s.id]; });
+}
+
+/* ---------- rendering ---------- */
+var current = null;
+
+function render() {
+  var todo = pending();
+  if (!todo.length) return finish();
+  var s = todo[0];
+  current = s;
+  $("gate").style.display = "none";
+  $("done").style.display = "none";
+  $("main").style.display = "";
+
+  var done = Object.keys(effective()).length;
+  $("sid").textContent = s.id;
+  $("type").textContent = s.type;
+  $("who").textContent = "评测者：" + rater();
+  $("prog").textContent = done + " / " + S.length + " 已完成";
+  $("progbar").style.width = (100 * done / S.length).toFixed(1) + "%";
+  $("instr").textContent = s.instruction;
+
+  var slots = slotsFor(s.id);
+  var grid = $("grid");
+  grid.innerHTML = "";
+  grid.appendChild(cell("原图", s.orig, "原图", "orig"));
+  slots.forEach(function (sl) {
+    grid.appendChild(cell(sl.label, s.edits[sl.model], sl.label + " · " + (P.labels[sl.model] || sl.model), ""));
+  });
+
+  var prefs = $("prefs");
+  prefs.innerHTML = "";
+  slots.forEach(function (sl) { prefs.appendChild(prefRadio(sl.label, sl.label)); });
+  prefs.appendChild(prefRadio("tie", "差不多"));
+
+  $("hint").textContent = "";
+  $("hint").className = "hint";
+  window.scrollTo(0, 0);
+}
+
+function cell(headText, src, altText, extra) {
+  var d = document.createElement("div");
+  d.className = "cell";
+  var h = document.createElement("div");
+  h.className = "head " + (extra || "");
+  h.textContent = headText;
+  var img = document.createElement("img");
+  img.src = src; img.alt = altText; img.loading = "eager";
+  img.addEventListener("click", function () { openLb(src, altText); });
+  d.appendChild(h); d.appendChild(img);
+
+  // The original is the reference, not a candidate: no success/failure verdict.
+  if (extra !== "orig") {
+    var model = current.edits ? findModelBySrc(src) : null;
+    if (model) {
+      var row = document.createElement("div");
+      row.className = "judge";
+      row.appendChild(verdict(model, "1", "成功", "yes"));
+      row.appendChild(verdict(model, "0", "失败", "no"));
+      d.appendChild(row);
+    }
+  }
+  return d;
+}
+
+function findModelBySrc(src) {
+  if (!current) return null;
+  var hit = null;
+  Object.keys(current.edits).forEach(function (m) {
+    if (current.edits[m] === src) hit = m;
+  });
+  return hit;
+}
+
+function verdict(model, value, text, cls) {
+  var lab = document.createElement("label");
+  lab.className = cls;
+  var r = document.createElement("input");
+  r.type = "radio"; r.name = "esr_" + model; r.value = value;
+  lab.appendChild(r);
+  lab.appendChild(document.createTextNode(text));
+  lab.addEventListener("click", function () {
+    // explicit handler: :has() is not available on every browser, and a hidden
+    // input cannot be checked by clicking the label text alone everywhere
+    r.checked = true;
+    var sibs = lab.parentNode.querySelectorAll("label");
+    sibs.forEach(function (x) { x.classList.remove("checked"); });
+    lab.classList.add("checked");
+  });
+  return lab;
+}
+
+function prefRadio(val, text) {
+  var lab = document.createElement("label");
+  lab.className = "pref";
+  var r = document.createElement("input");
+  r.type = "radio"; r.name = "best"; r.value = val;
+  lab.appendChild(r);
+  lab.appendChild(document.createTextNode(text));
+  return lab;
+}
+
+/* ---------- lightbox ---------- */
+function openLb(src, cap) {
+  $("lbimg").src = src;
+  $("lbcap").textContent = cap;
+  $("lb").classList.add("on");
+}
+$("lb").addEventListener("click", function () { $("lb").classList.remove("on"); });
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") $("lb").classList.remove("on");
+});
+
+/* ---------- submit ---------- */
+function collect() {
+  var s = current, slots = slotsFor(s.id);
+  var esr = {}, ok = true;
+  slots.forEach(function (sl) {
+    var sel = document.querySelector('input[name="esr_' + sl.model + '"]:checked');
+    if (!sel) { ok = false; return; }
+    esr[sl.model] = Number(sel.value);
+  });
+  if (!ok) return {err: "还有结果没判断成功/失败"};
+  var best = document.querySelector('input[name="best"]:checked');
+  if (!best) return {err: "还没有选择整体最好"};
+  var bestSlot = best.value, bestModel = null;
+  if (bestSlot !== "tie") {
+    var hit = slots.filter(function (x) { return x.label === bestSlot; })[0];
+    bestModel = hit ? hit.model : null;
+  }
+  var map = {};
+  slots.forEach(function (sl) { map[sl.label] = sl.model; });
+  return {rec: {
+    rater: rater(), sid: sid(), sample_id: s.id, slots: map,
+    esr: esr, best_slot: bestSlot, best_model: bestModel,
+    ts: new Date().toISOString()
+  }};
+}
+
+/* POST to the configured endpoint; on failure the vote stays local and is
+   retried on the next load, so a flaky network never loses a judgement */
+function push(rec) {
+  if (P.storage !== "endpoint" || !P.endpoint || !navigator.sendBeacon) {
+    if (P.storage === "endpoint" && P.endpoint) {
+      fetch(P.endpoint, {method: "POST", headers: {"Content-Type": "application/json"},
+                         body: JSON.stringify(rec), keepalive: true}).catch(function () {});
+    }
+    return;
+  }
+  try {
+    navigator.sendBeacon(P.endpoint,
+      new Blob([JSON.stringify(rec)], {type: "application/json"}));
+  } catch (e) { /* stays local */ }
+}
+
+$("send").addEventListener("click", function () {
+  var got = collect();
+  if (got.err) { $("hint").textContent = got.err; return; }
+  var v = loadVotes();
+  v.push(got.rec);
+  saveVotes(v);
+  push(got.rec);
+  render();
+});
+
+$("undo").addEventListener("click", function () {
+  var done = effective();
+  var ids = Object.keys(done);
+  if (!ids.length) { $("hint").textContent = "没有可撤销的票"; return; }
+  ids.sort(function (a, b) { return new Date(done[a].ts) - new Date(done[b].ts); });
+  var target = ids[ids.length - 1];
+  var v = loadVotes();
+  v.push({rater: rater(), sid: sid(), sample_id: target, undo: true,
+          ts: new Date().toISOString()});
+  saveVotes(v);
+  render();
+});
+
+/* ---------- finish ---------- */
+function finish() {
+  $("main").style.display = "none";
+  $("gate").style.display = "none";
+  $("done").style.display = "";
+  var done = effective(), ids = Object.keys(done);
+  $("done-stats").textContent = "共 " + ids.length + " 条投票，"
+    + "评测者 " + rater() + "。";
+}
+
+$("dl").addEventListener("click", function () {
+  var blob = new Blob([JSON.stringify(loadVotes(), null, 1)], {type: "application/json"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "votes_" + (rater() || "anon") + ".json";
+  a.click();
+});
+$("reset").addEventListener("click", function () {
+  if (confirm("清空本地投票并重新开始？此操作不可恢复。")) {
+    localStorage.removeItem(VKEY);
+    render();
+  }
+});
+
+/* ---------- gate ---------- */
+$("gate-go").addEventListener("click", function () {
+  var n = ($("gate-name").value || "").trim();
+  if (!/^[0-9A-Za-z_.@-]{1,40}$/.test(n)) {
+    $("gate-err").textContent = "只能是字母、数字、下划线、点或 @，长度 1–40";
+    return;
+  }
+  localStorage.setItem(RKEY, n);
+  render();
+});
+$("gate-name").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") $("gate-go").click();
+});
+
+/* ---------- cell size ---------- */
+(function () {
+  var saved = localStorage.getItem(CKEY);
+  if (saved) document.documentElement.style.setProperty("--cell-min", saved + "px");
+  document.querySelectorAll(".sz").forEach(function (b) {
+    if (saved && b.dataset.min === saved) b.classList.add("on");
+    b.addEventListener("click", function () {
+      document.documentElement.style.setProperty("--cell-min", b.dataset.min + "px");
+      localStorage.setItem(CKEY, b.dataset.min);
+      document.querySelectorAll(".sz").forEach(function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+    });
+  });
+})();
+
+/* ---------- boot ---------- */
+(function () {
+  $("gate-n").textContent = S.length;
+  $("gate-m").textContent = M.length;
+  if (!S.length) {
+    $("gate").style.display = "";
+    $("gate-err").textContent = "数据为空：先运行 build_public_site.py";
+    return;
+  }
+  if (!rater()) { $("gate").style.display = ""; return; }
+  render();
+})();
+
+/* keep radio inputs working: clicking the label toggles the hidden input */
+document.addEventListener("click", function (e) {
+  var lab = e.target.closest ? e.target.closest("label.pref") : null;
+  if (!lab) return;
+  var inp = lab.querySelector("input");
+  if (inp) inp.checked = true;
+  lab.parentNode.querySelectorAll("label.pref").forEach(function (x) {
+    x.classList.remove("checked");
+  });
+  lab.classList.add("checked");
+});
+})();
+</script>
+</body>
+</html>
