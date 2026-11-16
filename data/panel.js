@@ -24,6 +24,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the animal from a cat to a dog",
+   "instruction_zh": "把图中的动物从猫换成狗",
    "orig": "img/orig/000000000003.jpg",
    "edits": {
     "controlar": "img/controlar/000000000003.png",
@@ -40,6 +41,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the animal from tiger to cat",
+   "instruction_zh": "把图中的动物从老虎换成猫",
    "orig": "img/orig/000000000019.jpg",
    "edits": {
     "controlar": "img/controlar/000000000019.png",
@@ -56,6 +58,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "change the woman to a storm-trooper",
+   "instruction_zh": "把这位女性换成冲锋队员（星战风暴兵）",
    "orig": "img/orig/000000000025.jpg",
    "edits": {
     "controlar": "img/controlar/000000000025.png",
@@ -72,6 +75,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Turn the painting into a photo",
+   "instruction_zh": "把这幅画变成照片",
    "orig": "img/orig/000000000046.jpg",
    "edits": {
     "controlar": "img/controlar/000000000046.png",
@@ -88,6 +92,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the grass to ground",
+   "instruction_zh": "把草地变成裸露的地面",
    "orig": "img/orig/000000000053.jpg",
    "edits": {
     "controlar": "img/controlar/000000000053.png",
@@ -104,6 +109,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the roof into a tile one",
+   "instruction_zh": "把屋顶换成瓦片屋顶",
    "orig": "img/orig/000000000109.jpg",
    "edits": {
     "controlar": "img/controlar/000000000109.png",
@@ -120,6 +126,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Replace the cat with a dog",
+   "instruction_zh": "把猫替换成狗",
    "orig": "img/orig/000000000111.jpg",
    "edits": {
     "controlar": "img/controlar/000000000111.png",
@@ -136,6 +143,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the flower's color from pink to blue and the center from yellow to red",
+   "instruction_zh": "把花的颜色从粉色变成蓝色，花心从黄色变成红色",
    "orig": "img/orig/000000000117.jpg",
    "edits": {
     "controlar": "img/controlar/000000000117.png",
@@ -152,6 +160,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the field to a forest",
+   "instruction_zh": "把田野变成森林",
    "orig": "img/orig/000000000118.jpg",
    "edits": {
     "controlar": "img/controlar/000000000118.png",
@@ -168,6 +177,7 @@ window.PANEL = {
    "type": "random",
    "type_id": "0",
    "instruction": "Change the medium from watercolor to oil painting",
+   "instruction_zh": "把画种从水彩改成油画",
    "orig": "img/orig/000000000121.jpg",
    "edits": {
     "controlar": "img/controlar/000000000121.png",
@@ -184,6 +194,7 @@ window.PANEL = {
    "type": "change_object",
    "type_id": "1",
    "instruction": "Change the photo on the wall to a painting",
+   "instruction_zh": "把墙上的照片换成一幅画",
    "orig": "img/orig/113000000006.jpg",
    "edits": {
     "controlar": "img/controlar/113000000006.png",
@@ -200,6 +211,7 @@ window.PANEL = {
    "type": "change_object",
    "type_id": "1",
    "instruction": "Change the animal from bear to rabbit",
+   "instruction_zh": "把图中的动物从熊变成兔子",
    "orig": "img/orig/114000000001.jpg",
    "edits": {
     "controlar": "img/controlar/114000000001.png",
@@ -216,6 +228,7 @@ window.PANEL = {
    "type": "change_object",
    "type_id": "1",
    "instruction": "Change the bird to a leopard",
+   "instruction_zh": "把鸟换成豹子",
    "orig": "img/orig/121000000009.jpg",
    "edits": {
     "controlar": "img/controlar/121000000009.png",
@@ -232,6 +245,7 @@ window.PANEL = {
    "type": "change_object",
    "type_id": "1",
    "instruction": "Turn th guitar into a piano",
+   "instruction_zh": "把吉他变成钢琴",
    "orig": "img/orig/122000000006.jpg",
    "edits": {
     "controlar": "img/controlar/122000000006.png",
@@ -248,6 +262,7 @@ window.PANEL = {
    "type": "change_object",
    "type_id": "1",
    "instruction": "change the green napkin to dilicious pizza",
+   "instruction_zh": "把绿色餐巾变成美味的披萨",
    "orig": "img/orig/123000000000.jpg",
    "edits": {
     "controlar": "img/controlar/123000000000.png",
@@ -264,6 +279,7 @@ window.PANEL = {
    "type": "change_object",
    "type_id": "1",
    "instruction": "Replace the cup with a candle",
+   "instruction_zh": "把杯子替换成蜡烛",
    "orig": "img/orig/123000000009.jpg",
    "edits": {
     "controlar": "img/controlar/123000000009.png",
@@ -280,6 +296,7 @@ window.PANEL = {
    "type": "add_object",
    "type_id": "2",
    "instruction": "Add a cat to the zebra painting",
+   "instruction_zh": "在斑马的画作里加一只猫",
    "orig": "img/orig/211000000004.jpg",
    "edits": {
     "controlar": "img/controlar/211000000004.png",
@@ -296,6 +313,7 @@ window.PANEL = {
    "type": "add_object",
    "type_id": "2",
    "instruction": "Add pens to the squirrel's paws",
+   "instruction_zh": "在松鼠的爪子里加上笔",
    "orig": "img/orig/211000000007.jpg",
    "edits": {
     "controlar": "img/controlar/211000000007.png",
@@ -312,6 +330,7 @@ window.PANEL = {
    "type": "add_object",
    "type_id": "2",
    "instruction": "Add a tattoo to the man",
+   "instruction_zh": "给这个男人加上纹身",
    "orig": "img/orig/212000000001.jpg",
    "edits": {
     "controlar": "img/controlar/212000000001.png",
@@ -328,6 +347,7 @@ window.PANEL = {
    "type": "add_object",
    "type_id": "2",
    "instruction": "Add books to the table",
+   "instruction_zh": "在桌上加几本书",
    "orig": "img/orig/213000000007.jpg",
    "edits": {
     "controlar": "img/controlar/213000000007.png",
@@ -344,6 +364,7 @@ window.PANEL = {
    "type": "add_object",
    "type_id": "2",
    "instruction": "Add horses under the statue",
+   "instruction_zh": "在雕像下方加上马",
    "orig": "img/orig/214000000003.jpg",
    "edits": {
     "controlar": "img/controlar/214000000003.png",
@@ -360,6 +381,7 @@ window.PANEL = {
    "type": "add_object",
    "type_id": "2",
    "instruction": "Add Aliens in the scene",
+   "instruction_zh": "在这个场景里加入外星人",
    "orig": "img/orig/222000000002.jpg",
    "edits": {
     "controlar": "img/controlar/222000000002.png",
@@ -376,6 +398,7 @@ window.PANEL = {
    "type": "delete_object",
    "type_id": "3",
    "instruction": "Remove the three painted eggs",
+   "instruction_zh": "去掉三个彩绘的蛋",
    "orig": "img/orig/311000000003.jpg",
    "edits": {
     "controlar": "img/controlar/311000000003.png",
@@ -392,6 +415,7 @@ window.PANEL = {
    "type": "delete_object",
    "type_id": "3",
    "instruction": "Remove the tie from the cartoon boy",
+   "instruction_zh": "去掉卡通男孩的领带",
    "orig": "img/orig/312000000009.jpg",
    "edits": {
     "controlar": "img/controlar/312000000009.png",
@@ -408,6 +432,7 @@ window.PANEL = {
    "type": "delete_object",
    "type_id": "3",
    "instruction": "Remove the bulb",
+   "instruction_zh": "去掉灯泡",
    "orig": "img/orig/313000000001.jpg",
    "edits": {
     "controlar": "img/controlar/313000000001.png",
@@ -424,6 +449,7 @@ window.PANEL = {
    "type": "delete_object",
    "type_id": "3",
    "instruction": "Remove the dog",
+   "instruction_zh": "去掉那只狗",
    "orig": "img/orig/321000000008.jpg",
    "edits": {
     "controlar": "img/controlar/321000000008.png",
@@ -440,6 +466,7 @@ window.PANEL = {
    "type": "delete_object",
    "type_id": "3",
    "instruction": "Remove mint leaves",
+   "instruction_zh": "去掉薄荷叶",
    "orig": "img/orig/323000000001.jpg",
    "edits": {
     "controlar": "img/controlar/323000000001.png",
@@ -456,6 +483,7 @@ window.PANEL = {
    "type": "delete_object",
    "type_id": "3",
    "instruction": "Remove the paraglider flying over the mountain",
+   "instruction_zh": "去掉在山上方飞行的滑翔伞",
    "orig": "img/orig/324000000002.jpg",
    "edits": {
     "controlar": "img/controlar/324000000002.png",
@@ -472,6 +500,7 @@ window.PANEL = {
    "type": "change_attr_content",
    "type_id": "4",
    "instruction": "add leopard color to the dog",
+   "instruction_zh": "给狗加上豹纹配色",
    "orig": "img/orig/421000000000.jpg",
    "edits": {
     "controlar": "img/controlar/421000000000.png",
@@ -488,6 +517,7 @@ window.PANEL = {
    "type": "change_attr_content",
    "type_id": "4",
    "instruction": "Make the table and chairs cluttered",
+   "instruction_zh": "让桌椅显得凌乱堆满东西",
    "orig": "img/orig/423000000004.jpg",
    "edits": {
     "controlar": "img/controlar/423000000004.png",
@@ -504,6 +534,7 @@ window.PANEL = {
    "type": "change_attr_content",
    "type_id": "4",
    "instruction": "Change dimly illuminated to sunlit illuminated",
+   "instruction_zh": "把昏暗的光线改成阳光照射",
    "orig": "img/orig/424000000000.jpg",
    "edits": {
     "controlar": "img/controlar/424000000000.png",
@@ -520,6 +551,7 @@ window.PANEL = {
    "type": "change_attr_pose",
    "type_id": "5",
    "instruction": "Make the painting an upside down one",
+   "instruction_zh": "把这幅画上下倒过来",
    "orig": "img/orig/513000000002.jpg",
    "edits": {
     "controlar": "img/controlar/513000000002.png",
@@ -536,6 +568,7 @@ window.PANEL = {
    "type": "change_attr_pose",
    "type_id": "5",
    "instruction": "Make the fox's head down",
+   "instruction_zh": "让狐狸低下头",
    "orig": "img/orig/521000000003.jpg",
    "edits": {
     "controlar": "img/controlar/521000000003.png",
@@ -552,6 +585,7 @@ window.PANEL = {
    "type": "change_attr_pose",
    "type_id": "5",
    "instruction": "make the white flowers fade",
+   "instruction_zh": "让白花枯萎凋谢",
    "orig": "img/orig/524000000003.jpg",
    "edits": {
     "controlar": "img/controlar/524000000003.png",
@@ -568,6 +602,7 @@ window.PANEL = {
    "type": "change_attr_color",
    "type_id": "6",
    "instruction": "Change the color of the bunny to pink",
+   "instruction_zh": "把兔子的颜色变成粉色",
    "orig": "img/orig/611000000003.jpg",
    "edits": {
     "controlar": "img/controlar/611000000003.png",
@@ -584,6 +619,7 @@ window.PANEL = {
    "type": "change_attr_color",
    "type_id": "6",
    "instruction": "Change the color of the curtain from red to yellow",
+   "instruction_zh": "把窗帘的颜色从红色变成黄色",
    "orig": "img/orig/613000000001.jpg",
    "edits": {
     "controlar": "img/controlar/613000000001.png",
@@ -600,6 +636,7 @@ window.PANEL = {
    "type": "change_attr_color",
    "type_id": "6",
    "instruction": "Change the kitten's color to yellow",
+   "instruction_zh": "把小猫的颜色变成黄色",
    "orig": "img/orig/621000000004.jpg",
    "edits": {
     "controlar": "img/controlar/621000000004.png",
@@ -616,6 +653,7 @@ window.PANEL = {
    "type": "change_attr_material",
    "type_id": "7",
    "instruction": "turn the kitten into a sculpture.",
+   "instruction_zh": "把小猫变成雕塑",
    "orig": "img/orig/711000000004.jpg",
    "edits": {
     "controlar": "img/controlar/711000000004.png",
@@ -632,6 +670,7 @@ window.PANEL = {
    "type": "change_attr_material",
    "type_id": "7",
    "instruction": "Change the cabinets to be wooden",
+   "instruction_zh": "把橱柜改成木质",
    "orig": "img/orig/713000000004.jpg",
    "edits": {
     "controlar": "img/controlar/713000000004.png",
@@ -648,6 +687,7 @@ window.PANEL = {
    "type": "change_attr_material",
    "type_id": "7",
    "instruction": "Replace the chocolate cake with an icecream cake",
+   "instruction_zh": "把巧克力蛋糕换成冰淇淋蛋糕",
    "orig": "img/orig/723000000003.jpg",
    "edits": {
     "controlar": "img/controlar/723000000003.png",
@@ -664,6 +704,7 @@ window.PANEL = {
    "type": "change_background",
    "type_id": "8",
    "instruction": "Add chaotic office environment",
+   "instruction_zh": "加上杂乱的办公室环境",
    "orig": "img/orig/812000000003.jpg",
    "edits": {
     "controlar": "img/controlar/812000000003.png",
@@ -680,6 +721,7 @@ window.PANEL = {
    "type": "change_background",
    "type_id": "8",
    "instruction": "Make the tunnel bright",
+   "instruction_zh": "让隧道变明亮",
    "orig": "img/orig/812000000007.jpg",
    "edits": {
     "controlar": "img/controlar/812000000007.png",
@@ -696,6 +738,7 @@ window.PANEL = {
    "type": "change_background",
    "type_id": "8",
    "instruction": "Change the background to flowers",
+   "instruction_zh": "把背景换成花丛",
    "orig": "img/orig/822000000008.jpg",
    "edits": {
     "controlar": "img/controlar/822000000008.png",
@@ -712,6 +755,7 @@ window.PANEL = {
    "type": "change_background",
    "type_id": "8",
    "instruction": "Change to white background",
+   "instruction_zh": "换成白色背景",
    "orig": "img/orig/823000000005.jpg",
    "edits": {
     "controlar": "img/controlar/823000000005.png",
@@ -728,6 +772,7 @@ window.PANEL = {
    "type": "change_background",
    "type_id": "8",
    "instruction": "Add a clean background",
+   "instruction_zh": "加上干净的背景",
    "orig": "img/orig/823000000009.jpg",
    "edits": {
     "controlar": "img/controlar/823000000009.png",
@@ -744,6 +789,7 @@ window.PANEL = {
    "type": "change_style",
    "type_id": "9",
    "instruction": "change the image to a brush painting",
+   "instruction_zh": "把图像变成笔触画",
    "orig": "img/orig/911000000008.jpg",
    "edits": {
     "controlar": "img/controlar/911000000008.png",
@@ -760,6 +806,7 @@ window.PANEL = {
    "type": "change_style",
    "type_id": "9",
    "instruction": "Change to Chinese watercolor style",
+   "instruction_zh": "改成中国水墨风格",
    "orig": "img/orig/912000000002.jpg",
    "edits": {
     "controlar": "img/controlar/912000000002.png",
@@ -776,6 +823,7 @@ window.PANEL = {
    "type": "change_style",
    "type_id": "9",
    "instruction": "Add a digital art style to the retro living room",
+   "instruction_zh": "给复古客厅加上数字艺术风格",
    "orig": "img/orig/913000000001.jpg",
    "edits": {
     "controlar": "img/controlar/913000000001.png",
@@ -792,6 +840,7 @@ window.PANEL = {
    "type": "change_style",
    "type_id": "9",
    "instruction": "Add cartoon effect to the kitten",
+   "instruction_zh": "给小猫加上卡通效果",
    "orig": "img/orig/921000000002.jpg",
    "edits": {
     "controlar": "img/controlar/921000000002.png",
@@ -808,6 +857,7 @@ window.PANEL = {
    "type": "change_style",
    "type_id": "9",
    "instruction": "Change the image to a wall mural",
+   "instruction_zh": "把图像变成墙面壁画",
    "orig": "img/orig/923000000003.jpg",
    "edits": {
     "controlar": "img/controlar/923000000003.png",

@@ -20,6 +20,8 @@ h1{font-size:17px;margin:0;font-weight:600}
 .bar>i{display:block;height:100%;background:var(--acc);transition:width .2s}
 .prompt{font-size:15px;line-height:1.45;margin:0 0 14px}
 .prompt b{color:#ffd479}
+.prompt .zh{display:block;margin-top:4px;color:#c8d2e0;font-size:14px}
+.prompt .zh:empty{display:none}
 .card{background:var(--card);border:1px solid var(--line);border-radius:8px;
       padding:16px;margin-top:14px;max-width:640px}
 .row{display:grid;gap:8px;align-items:start;
@@ -110,7 +112,7 @@ th{color:var(--dim);font-weight:500}
     </span>
   </div>
   <div class="bar"><i id="progbar" style="width:0%"></i></div>
-  <div class="prompt"><b>编辑指令：</b><span id="instr"></span></div>
+  <div class="prompt"><b>编辑指令：</b><span id="instr"></span><span id="instrzh" class="zh"></span></div>
   <div class="row" id="grid"></div>
   <div class="prefrow">
     <span class="q">整体最好：</span>
@@ -239,6 +241,7 @@ function render() {
   $("prog").textContent = done + " / " + S.length + " 已完成";
   $("progbar").style.width = (100 * done / S.length).toFixed(1) + "%";
   $("instr").textContent = s.instruction;
+  $("instrzh").textContent = s.instruction_zh || "";
 
   var slots = slotsFor(s.id);
   var grid = $("grid");
