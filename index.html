@@ -363,17 +363,46 @@ function collect() {
 /* POST to the configured endpoint; on failure the vote stays local and is
    retried on the next load, so a flaky network never loses a judgement */
 function push(rec) {
-  if (P.storage !== "endpoint" || !P.endpoint || !navigator.sendBeacon) {
-    if (P.storage === "endpoint" && P.endpoint) {
-      fetch(P.endpoint, {method: "POST", headers: {"Content-Type": "application/json"},
-                         body: JSON.stringify(rec), keepalive: true}).catch(function () {});
-    }
+  if (P.storage !== "endpoint" || !P.endpoint) {
     return;
   }
-  try {
-    navigator.sendBeacon(P.endpoint,
-      new Blob([JSON.stringify(rec)], {type: "application/json"}));
-  } catch (e) { /* stays local */ }
+
+  fetch(P.endpoint, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "text/plain;charset=UTF-8"
+    },
+    body: JSON.stringify(rec),
+    keepalive: true
+  })
+  .then(async function (response) {
+    var result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(
+        "HTTP " + response.status + ": " +
+        JSON.stringify(result)
+      );
+    }
+
+    console.info(
+      "[Vote Upload] Success:",
+      rec.rater,
+      rec.sample_id,
+      result.key
+    );
+  })
+  .catch(function (err) {
+    console.error(
+      "[Vote Upload] Failed. Local vote retained:",
+      err
+    );
+
+    alert(
+      "投票已保存在本地，但云端上传失败，请联系管理员。"
+    );
+  });
 }
 
 $("send").addEventListener("click", function () {
